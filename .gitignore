@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
+
+# AI
+runs/
+weights/
+
+# Uploads
+uploads/
+
+# Reports
+reports/
+
+# Database
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Logs
+*.log
