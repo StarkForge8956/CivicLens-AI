@@ -1,11 +1,15 @@
-from fastapi import FastAPI
-
-from app.api.health import router as health_router
+from app.core.init_db import init_database
 from app.core.config import (
-    APP_DESCRIPTION,
     APP_NAME,
     APP_VERSION,
+    APP_DESCRIPTION,
 )
+from fastapi import FastAPI
+
+# Initialize the database
+init_database()
+
+from app.api.upload import router as upload_router
 
 app = FastAPI(
     title=APP_NAME,
@@ -13,4 +17,11 @@ app = FastAPI(
     description=APP_DESCRIPTION,
 )
 
-app.include_router(health_router)
+app.include_router(upload_router, prefix="/api", tags=["Upload"])
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "CivicLens-AI Backend Running"
+    }

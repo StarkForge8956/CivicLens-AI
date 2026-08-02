@@ -16,3 +16,13 @@ DATABASE_PATH = BASE_DIR / "civiclens.db"
 # Create required directories if they don't exist
 UPLOAD_DIR.mkdir(exist_ok=True)
 REPORT_DIR.mkdir(exist_ok=True)
+
+# Upload settings
+
+ALLOWED_EXTENSIONS = {
+    ".jpg",
+    ".jpeg",
+    ".png"
+}
+
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
