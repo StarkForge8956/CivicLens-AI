@@ -1,7 +1,10 @@
+import os
+
 from app.crud.image import (
     create_image,
     get_all_images,
     get_image_by_id,
+    delete_image,
 )
 
 from fastapi import Depends
@@ -73,3 +76,27 @@ def get_image(
         )
 
     return image
+
+@router.delete("/images/{image_id}")
+def delete_uploaded_image(
+    image_id: int,
+    db: Session = Depends(get_db),
+):
+    image = get_image_by_id(db, image_id)
+
+    if image is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Image not found.",
+        )
+
+    file_path = os.path.join("uploads", image.stored_filename)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+    delete_image(db, image)
+
+    return {
+        "message": "Image deleted successfully."
+    }

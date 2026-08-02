@@ -36,3 +36,10 @@ def get_image_by_id(db: Session, image_id: int):
     Return a single image by ID.
     """
     return db.query(Image).filter(Image.id == image_id).first()
+
+def delete_image(db: Session, image: Image):
+    """
+    Delete an image record.
+    """
+    db.delete(image)
+    db.commit()
