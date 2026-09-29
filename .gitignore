@@ -62,3 +62,5 @@ reports/
 # -------------------------
 .DS_Store
 Thumbs.db
+# AI Dataset
+ai/datasets/

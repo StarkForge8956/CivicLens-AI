@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import Column, DateTime, Integer, String
+from sqlalchemy import Column, DateTime, Float, Integer, String
 
 from app.core.database import Base
 
@@ -17,3 +17,10 @@ class Image(Base):
     upload_time = Column(DateTime, default=datetime.utcnow)
 
     status = Column(String, default="Pending")
+
+    # Optional location metadata
+    latitude = Column(Float, nullable=True)
+
+    longitude = Column(Float, nullable=True)
+
+    address = Column(String, nullable=True)

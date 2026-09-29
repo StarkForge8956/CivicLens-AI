@@ -10,6 +10,9 @@ from fastapi import FastAPI
 init_database()
 
 from app.api.upload import router as upload_router
+from app.api.detections import router as detections_router
+from app.api.health import router as health_router
+from app.api.reports import router as reports_router
 
 app = FastAPI(
     title=APP_NAME,
@@ -18,7 +21,21 @@ app = FastAPI(
 )
 
 app.include_router(upload_router, prefix="/api", tags=["Upload"])
-
+app.include_router(
+    detections_router,
+    prefix="/api",
+    tags=["Detections"],
+)
+app.include_router(
+    reports_router,
+    prefix="/api",
+    tags=["Reports"],
+)
+app.include_router(
+    health_router,
+    prefix="/api/health",
+    tags=["Health"],
+)
 
 @app.get("/")
 def home():
