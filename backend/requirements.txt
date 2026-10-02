@@ -1,0 +1,8 @@
+fastapi==0.141.1
+uvicorn==0.52.0
+python-multipart==0.0.32
+SQLAlchemy==2.0.51
+reportlab==5.0.1
+ultralytics==8.4.163
+ultralytics-platform==0.1.65
+ultralytics-thop==2.1.6
