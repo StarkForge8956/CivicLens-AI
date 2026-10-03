@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import cv2
 from ultralytics import YOLO
 
 
@@ -9,12 +10,12 @@ class AIService:
     """
 
     MODEL_PATH = (
-    Path(__file__).resolve().parents[3]
-    / "ai"
-    / "models"
-    / "civiclens_yolo11n"
-    / "best.pt"
-)
+        Path(__file__).resolve().parents[3]
+        / "ai"
+        / "models"
+        / "civiclens_yolo11n"
+        / "best.pt"
+    )
 
     CLASS_NAMES = {
         0: "pothole",
@@ -44,7 +45,8 @@ class AIService:
 
     def predict(self, image_path: Path):
         """
-        Run YOLO inference on an image.
+        Run YOLO inference on an image and save
+        an annotated copy with bounding boxes.
         """
 
         if self.model is None:
@@ -67,7 +69,19 @@ class AIService:
 
         detections = []
 
+        annotated_path = image_path.with_name(
+            f"{image_path.stem}_annotated.jpg"
+        )
+
         for result in results:
+            # Generate annotated image with bounding boxes
+            annotated_image = result.plot()
+
+            cv2.imwrite(
+                str(annotated_path),
+                annotated_image,
+            )
+
             if result.boxes is None:
                 continue
 
@@ -95,5 +109,6 @@ class AIService:
                 )
 
         print(f"Detections found: {len(detections)}")
+        print(f"Annotated image saved: {annotated_path}")
 
         return detections

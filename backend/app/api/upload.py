@@ -1,8 +1,8 @@
 import os
+from pathlib import Path
 
 from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
 from sqlalchemy.orm import Session
-from app.services.severity_service import calculate_severity
 
 from app.core.database_session import get_db
 from app.crud.image import (
@@ -14,7 +14,9 @@ from app.crud.image import (
 from app.crud.detection import create_detection
 from app.services.upload_service import save_uploaded_image
 from app.services.ai_service import AIService
+from app.services.severity_service import calculate_severity
 from app.utils.file_validator import validate_image
+
 
 router = APIRouter()
 
@@ -41,20 +43,19 @@ async def upload_image(
 
     # Create image database record
     image_record = create_image(
-    db=db,
-    original_filename=result["original_filename"],
-    stored_filename=result["stored_filename"],
-    latitude=latitude,
-    longitude=longitude,
-    address=address,
-)
+        db=db,
+        original_filename=result["original_filename"],
+        stored_filename=result["stored_filename"],
+        latitude=latitude,
+        longitude=longitude,
+        address=address,
+    )
 
     # Run AI inference
     detections = ai_service.predict(
         result["file_path"]
     )
 
-    # Save detections to database
         # Save detections to database
     for detection in detections:
         bbox = detection["bbox"]
@@ -67,7 +68,7 @@ async def upload_image(
 
         detection["severity"] = severity
 
-        create_detection(
+        saved_detection = create_detection(
             db=db,
             image_id=image_record.id,
             class_id=detection["class_id"],
@@ -80,10 +81,16 @@ async def upload_image(
             severity=severity,
         )
 
-    
+        detection["id"] = saved_detection.id
+
     # Update image status
     image_record.status = "Processed"
     db.commit()
+
+    # Get annotated image filename
+    annotated_filename = (
+        Path(result["file_path"]).stem + "_annotated.jpg"
+    )
 
     return {
         "status": "success",
@@ -91,6 +98,8 @@ async def upload_image(
         "image_id": image_record.id,
         "original_filename": result["original_filename"],
         "stored_filename": result["stored_filename"],
+        "annotated_filename": annotated_filename,
+        "annotated_url": f"/uploads/{annotated_filename}",
         "file_path": result["file_path"],
         "latitude": latitude,
         "longitude": longitude,
@@ -103,10 +112,6 @@ async def upload_image(
 def get_images(
     db: Session = Depends(get_db),
 ):
-    """
-    Return image history with detection summaries.
-    """
-
     images = get_all_images(db)
 
     return [
@@ -115,17 +120,15 @@ def get_images(
             "filename": image.original_filename,
             "upload_time": image.upload_time,
             "status": image.status,
-
             "location": {
                 "latitude": image.latitude,
                 "longitude": image.longitude,
                 "address": image.address,
             },
-
             "detection_count": len(image.detections),
-
             "detections": [
                 {
+                    "id": detection.id,
                     "class_name": detection.class_name,
                     "confidence": detection.confidence,
                     "severity": detection.severity,
@@ -168,7 +171,7 @@ def delete_uploaded_image(
 
     file_path = os.path.join(
         "uploads",
-        image.stored_filename
+        image.stored_filename,
     )
 
     if os.path.exists(file_path):

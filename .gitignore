@@ -1,76 +1,37 @@
-# -------------------------
-# Node.js / React
-# -------------------------
-node_modules/
-dist/
-dist-ssr/
-build/
-*.local
-
-# -------------------------
 # Python
-# -------------------------
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.venv/
-venv/
-env/
+**/.venv/
+**/__pycache__/
+*.pyc
 
-# -------------------------
-# AI
-# -------------------------
-runs/
-weights/
-ai/datasets/
+# Node
+**/node_modules/
+**/dist/
 
-# -------------------------
-# Uploads
-# -------------------------
-uploads/
+# Environment
+.env
+.env.*
+!.env.example
 
-# -------------------------
-# Reports
-# -------------------------
-reports/
-
-# -------------------------
-# Database
-# -------------------------
+# Python generated files
 *.db
+*.sqlite
 *.sqlite3
 
-# -------------------------
-# Environment Variables
-# -------------------------
-.env
+# Uploads / generated images
+backend/uploads/*
+!backend/uploads/.gitkeep
 
-# -------------------------
-# Logs
-# -------------------------
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# YOLO training outputs
+**/runs/
 
-# -------------------------
-# VS Code / Editors
-# -------------------------
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Dataset
+ai/datasets/
 
-# -------------------------
-# Operating System
-# -------------------------
+# IDE / OS
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Logs
+*.log

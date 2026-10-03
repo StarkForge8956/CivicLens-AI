@@ -1,48 +1,16 @@
-# CivicLens-AI
+# React + Vite
 
-> AI-Powered Civic Infrastructure Monitoring System
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## Overview
+Currently, two official plugins are available:
 
-CivicLens-AI is an AI-powered web application that detects civic infrastructure issues such as potholes, garbage dumping, and overflowing dustbins from uploaded or drone-captured images.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-The application uses Computer Vision and Object Detection to help municipal authorities monitor, analyze, and manage infrastructure problems through an interactive dashboard.
+## React Compiler
 
----
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Tech Stack
+## Expanding the Oxlint configuration
 
-### Frontend
-- React
-- Vite
-- Tailwind CSS
-- Chart.js
-- Leaflet
-- OpenStreetMap
-
-### Backend
-- FastAPI
-- Python
-
-### AI
-- Ultralytics YOLO
-- OpenCV
-
-### Database
-- SQLite
-
-### Reports
-- pandas
-- ReportLab
-
----
-
-## Current Status
-
-🚧 Under Development
-
----
-
-## Team
-
-Class 12 CBSE AI Capstone Project
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
