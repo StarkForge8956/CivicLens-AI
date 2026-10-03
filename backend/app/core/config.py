@@ -9,13 +9,16 @@ APP_VERSION = "1.0.0"
 APP_DESCRIPTION = "AI-Powered Civic Infrastructure Monitoring System"
 
 # Directories
-UPLOAD_DIR = BASE_DIR / "uploads"
-REPORT_DIR = BASE_DIR / "reports"
-DATABASE_PATH = BASE_DIR / "civiclens.db"
+# Render persistent disk is mounted at /var/data
+PERSISTENT_DIR = Path("/var/data")
+
+UPLOAD_DIR = PERSISTENT_DIR / "uploads"
+REPORT_DIR = PERSISTENT_DIR / "reports"
+DATABASE_PATH = PERSISTENT_DIR / "civiclens.db"
 
 # Create required directories if they don't exist
-UPLOAD_DIR.mkdir(exist_ok=True)
-REPORT_DIR.mkdir(exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+REPORT_DIR.mkdir(parents=True, exist_ok=True)
 
 # Upload settings
 

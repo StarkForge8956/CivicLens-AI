@@ -3,6 +3,7 @@ from app.core.config import (
     APP_NAME,
     APP_VERSION,
     APP_DESCRIPTION,
+    UPLOAD_DIR,
 )
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
@@ -24,7 +25,7 @@ app = FastAPI(
 )
 app.mount(
     "/uploads",
-    StaticFiles(directory="uploads"),
+    StaticFiles(directory=str(UPLOAD_DIR)),
     name="uploads",
 )
 app.add_middleware(
