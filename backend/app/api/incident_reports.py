@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -30,8 +31,8 @@ def create_incident_report(
         )
 
     report_number = (
-        f"CL-{datetime.utcnow().year}-"
-        f"{detection.id:05d}"
+    f"CL-{datetime.now(ZoneInfo('Asia/Kolkata')).year}-"
+    f"{detection.id:05d}"
     )
 
     existing_report = (
@@ -197,9 +198,12 @@ def submit_incident_report(
     report.status = "Submitted"
     report.authority_name = "Municipal Authority"
     report.authority_reference = (
-        f"MA-{datetime.utcnow().year}-{report.id:05d}"
+    f"MA-{datetime.now(ZoneInfo('Asia/Kolkata')).year}-{report.id:05d}"
     )
-    report.submitted_at = datetime.utcnow()
+
+    report.submitted_at = datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None)
 
     db.commit()
     db.refresh(report)

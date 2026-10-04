@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
+from fastapi import APIRouter, Body, UploadFile, File, Depends, HTTPException, Form
 from sqlalchemy.orm import Session
 
 from app.core.database_session import get_db
@@ -13,6 +13,7 @@ from app.crud.image import (
 )
 from app.crud.detection import create_detection
 from app.services.upload_service import save_uploaded_image
+from app.core.config import UPLOAD_DIR
 from app.services.ai_service import AIService
 from app.services.severity_service import calculate_severity
 from app.utils.file_validator import validate_image
@@ -114,31 +115,96 @@ def get_images(
 ):
     images = get_all_images(db)
 
-    return [
-        {
-            "image_id": image.id,
-            "filename": image.original_filename,
-            "upload_time": image.upload_time,
-            "status": image.status,
-            "location": {
-                "latitude": image.latitude,
-                "longitude": image.longitude,
-                "address": image.address,
-            },
-            "detection_count": len(image.detections),
-            "detections": [
-                {
-                    "id": detection.id,
-                    "class_name": detection.class_name,
-                    "confidence": detection.confidence,
-                    "severity": detection.severity,
-                }
-                for detection in image.detections
-            ],
-        }
-        for image in images
-    ]
+    severity_rank = {
+        "Low": 1,
+        "Medium": 2,
+        "High": 3,
+    }
 
+    results = []
+
+    for image in images:
+        detections = [
+            {
+                "id": detection.id,
+                "class_name": detection.class_name,
+                "confidence": detection.confidence,
+                "severity": detection.severity,
+            }
+            for detection in image.detections
+        ]
+
+        overall_severity = "Low"
+
+        if detections:
+            overall_severity = max(
+                detections,
+                key=lambda detection:
+                severity_rank.get(
+                    detection["severity"],
+                    0,
+                ),
+            )["severity"]
+
+        results.append(
+            {
+                "image_id": image.id,
+                "filename": image.original_filename,
+                "stored_filename": image.stored_filename,
+                "upload_time": image.upload_time,
+                "date": (
+                    image.upload_time.strftime(
+                        "%d %b %Y, %I:%M %p"
+                    )
+                    if image.upload_time
+                    else None
+                ),
+                "status": image.status,
+                "severity": overall_severity,
+                "location": {
+                    "latitude": image.latitude,
+                    "longitude": image.longitude,
+                    "address": image.address,
+                },
+                "detection_count": len(detections),
+                "detections": detections,
+            }
+        )
+
+    return results
+@router.delete("/images/bulk")
+def delete_multiple_images(
+    image_ids: list[int] = Body(...),
+    db: Session = Depends(get_db),
+):
+    deleted_ids = []
+
+    for image_id in image_ids:
+        image = get_image_by_id(db, image_id)
+
+        if image is None:
+            continue
+
+        original_path = UPLOAD_DIR / image.stored_filename
+
+        annotated_path = UPLOAD_DIR / (
+            f"{Path(image.stored_filename).stem}_annotated.jpg"
+        )
+
+        for file_path in [
+            original_path,
+            annotated_path,
+        ]:
+            if file_path.exists():
+                file_path.unlink()
+
+        delete_image(db, image)
+        deleted_ids.append(image_id)
+
+    return {
+        "message": "Selected images deleted successfully.",
+        "deleted_ids": deleted_ids,
+    }
 
 @router.get("/images/{image_id}")
 def get_image(
@@ -169,16 +235,22 @@ def delete_uploaded_image(
             detail="Image not found.",
         )
 
-    file_path = os.path.join(
-        "uploads",
-        image.stored_filename,
+    original_path = UPLOAD_DIR / image.stored_filename
+
+    annotated_path = UPLOAD_DIR / (
+        f"{Path(image.stored_filename).stem}_annotated.jpg"
     )
 
-    if os.path.exists(file_path):
-        os.remove(file_path)
+    for file_path in [
+        original_path,
+        annotated_path,
+    ]:
+        if file_path.exists():
+            file_path.unlink()
 
     delete_image(db, image)
 
     return {
-        "message": "Image deleted successfully."
+        "message": "Image and associated data deleted successfully.",
+        "image_id": image_id,
     }

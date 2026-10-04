@@ -111,3 +111,35 @@ export async function submitIncidentReport(reportId) {
 
   return response.json()
 }
+export async function deleteImage(imageId) {
+  const response = await fetch(
+    `${API_BASE_URL}/images/${imageId}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete image.");
+  }
+
+  return response.json();
+}
+export async function deleteImages(imageIds) {
+  const response = await fetch(
+    `${API_BASE_URL}/images/bulk`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(imageIds),
+    }
+  )
+
+  if (!response.ok) {
+    throw new Error("Failed to delete selected images.")
+  }
+
+  return response.json()
+}

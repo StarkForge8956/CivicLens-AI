@@ -7,3 +7,5 @@ ultralytics==8.4.163
 ultralytics-platform==0.1.65
 ultralytics-thop==2.1.6
 torch==2.14.0
+tzdata
+tzdata

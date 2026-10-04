@@ -146,6 +146,10 @@ function Upload({ onAnalysisComplete }) {
 
       setResult(data)
       onAnalysisComplete(data)
+      window.dispatchEvent(
+       new Event("civiclens-data-updated")
+      ) 
+
     } catch (err) {
       setError(
         err.message ||

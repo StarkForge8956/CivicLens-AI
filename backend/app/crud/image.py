@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 
 from app.models.image import Image
+from app.models.detection import Detection
+from app.models.incident_report import IncidentReport
 
 
 def create_image(
@@ -46,7 +48,33 @@ def get_image_by_id(db: Session, image_id: int):
 
 def delete_image(db: Session, image: Image):
     """
-    Delete an image record.
+    Delete an image and all associated detections
+    and incident reports.
     """
+
+    detections = (
+        db.query(Detection)
+        .filter(Detection.image_id == image.id)
+        .all()
+    )
+
+    detection_ids = [
+        detection.id
+        for detection in detections
+    ]
+
+    if detection_ids:
+        db.query(IncidentReport).filter(
+            IncidentReport.detection_id.in_(detection_ids)
+        ).delete(
+            synchronize_session=False
+        )
+
+    db.query(Detection).filter(
+        Detection.image_id == image.id
+    ).delete(
+        synchronize_session=False
+    )
+
     db.delete(image)
     db.commit()

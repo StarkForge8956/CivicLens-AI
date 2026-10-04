@@ -6,19 +6,31 @@ function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    async function loadDashboardData() {
-      try {
-        const data = await getHistory()
-        setImages(data)
-      } catch (error) {
-        console.error("Failed to load dashboard data:", error)
-      } finally {
-        setLoading(false)
-      }
+  async function loadDashboardData() {
+    try {
+      const data = await getHistory()
+      setImages(data)
+    } catch (error) {
+      console.error("Failed to load dashboard data:", error)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    loadDashboardData()
-  }, [])
+  loadDashboardData()
+
+  window.addEventListener(
+    "civiclens-data-updated",
+    loadDashboardData
+  )
+
+  return () => {
+    window.removeEventListener(
+      "civiclens-data-updated",
+      loadDashboardData
+    )
+  }
+}, [])
 
   const allDetections = images.flatMap(
     (image) => image.detections || []
@@ -55,7 +67,7 @@ function Dashboard() {
 
         <div className="dashboard-status">
           <span className="status-dot"></span>
-          AI System Online
+          CivicLens-AI Online
         </div>
       </div>
 
@@ -70,7 +82,7 @@ function Dashboard() {
               {loading ? "..." : totalDetections}
             </h3>
 
-            <span>All analyzed images</span>
+            <span>Issues found in uploads</span>
           </div>
         </div>
 

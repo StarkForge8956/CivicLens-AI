@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import Column, DateTime, Float, Integer, String
 
@@ -14,7 +15,12 @@ class Image(Base):
 
     stored_filename = Column(String, nullable=False, unique=True)
 
-    upload_time = Column(DateTime, default=datetime.utcnow)
+    upload_time = Column(
+    DateTime,
+    default=lambda: datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None),
+)
 
     status = Column(String, default="Pending")
 

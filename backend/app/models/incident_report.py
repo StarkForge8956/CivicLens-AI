@@ -1,4 +1,5 @@
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 
@@ -39,11 +40,13 @@ class IncidentReport(Base):
     )
 
     submitted_at = Column(
-        DateTime,
-        nullable=True,
+    DateTime,
+    nullable=True,
     )
 
     created_at = Column(
-        DateTime,
-        default=datetime.utcnow,
+    DateTime,
+    default=lambda: datetime.now(
+        ZoneInfo("Asia/Kolkata")
+    ).replace(tzinfo=None),
     )
