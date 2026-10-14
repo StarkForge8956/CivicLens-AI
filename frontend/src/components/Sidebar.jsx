@@ -1,10 +1,14 @@
+import React from "react"
+
 function Sidebar({
   activeSection,
   onNavigate,
   collapsed,
   onToggle,
+  mobileOpen,
+  onMobileToggle,
 }) {
-  const menuItems = [
+  const navItems = [
     {
       id: "dashboard",
       label: "Dashboard",
@@ -12,8 +16,8 @@ function Sidebar({
     },
     {
       id: "upload",
-      label: "Upload / Analyze",
-      icon: "＋",
+      label: "Upload & Analyze",
+      icon: "↑",
     },
     {
       id: "results",
@@ -23,7 +27,7 @@ function Sidebar({
     {
       id: "history",
       label: "History",
-      icon: "◷",
+      icon: "↺",
     },
     {
       id: "statistics",
@@ -42,83 +46,117 @@ function Sidebar({
     },
   ]
 
+  const handleNavigation = (section) => {
+    onNavigate(section)
+
+    // Close the mobile drawer after selecting an option
+    if (window.innerWidth <= 700 && mobileOpen) {
+      onMobileToggle()
+    }
+  }
+
   return (
-    <aside
-      className={`sidebar ${
-        collapsed ? "sidebar-collapsed" : ""
-      }`}
-    >
-      <div className="sidebar-top">
-        {!collapsed && (
+    <>
+      {/* =========================================
+          MOBILE MENU BUTTON
+      ========================================= */}
+      <button
+        className="mobile-menu-button"
+        onClick={onMobileToggle}
+        aria-label="Open navigation"
+      >
+        ☰
+      </button>
+
+      {/* =========================================
+          SIDEBAR
+      ========================================= */}
+      <aside
+        className={`sidebar ${
+          collapsed ? "sidebar-collapsed" : ""
+        } ${
+          mobileOpen ? "mobile-open" : ""
+        }`}
+      >
+        {/* Brand + Toggle */}
+        <div className="sidebar-top">
           <div className="sidebar-brand">
-  <img
-    src="/civiclens-sidebar-icon.png"
-    alt="CivicLens AI"
-    className="sidebar-brand-logo"
-  />
+            <img
+              src="/civiclens-sidebar-icon.png"
+              alt="CivicLens AI"
+              className="sidebar-brand-logo"
+            />
 
-  {!collapsed && (
-    <div>
-      <h2>CivicLens</h2>
-      <span>AI MONITORING</span>
-    </div>
-  )}
-</div>
-        )}
+            {!collapsed && (
+              <div>
+                <h2>CivicLens</h2>
+                <span>AI MONITORING</span>
+              </div>
+            )}
+          </div>
 
-        <button
-          className="sidebar-toggle"
-          onClick={onToggle}
-          aria-label="Toggle sidebar"
-        >
-          ☰
-        </button>
-      </div>
+          {/* Desktop collapse button */}
+          <button
+            className="sidebar-toggle"
+            onClick={onToggle}
+            aria-label={
+              collapsed
+                ? "Expand sidebar"
+                : "Collapse sidebar"
+            }
+          >
+            {collapsed ? "→" : "←"}
+          </button>
+        </div>
 
-      <nav className="sidebar-nav">
-        {!collapsed && (
-          <p className="nav-label">
-            MAIN MENU
-          </p>
-        )}
+        {/* Navigation */}
+        <nav className="sidebar-nav">
+          {!collapsed && (
+            <p className="nav-label">
+              MAIN MENU
+            </p>
+          )}
 
-        <ul>
-          {menuItems.map((item) => (
-            <li
-              key={item.id}
-              className={`nav-item ${
-                activeSection === item.id
-                  ? "active"
-                  : ""
-              }`}
-              onClick={() => onNavigate(item.id)}
-              title={collapsed ? item.label : ""}
-            >
-              <span className="nav-icon">
-                {item.icon}
-              </span>
+          <ul>
+            {navItems.map((item) => (
+              <li
+                key={item.id}
+                className={`nav-item ${
+                  activeSection === item.id
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  handleNavigation(item.id)
+                }
+              >
+                <span className="nav-icon">
+                  {item.icon}
+                </span>
 
-              {!collapsed && (
-                <span>{item.label}</span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
+                {!collapsed && (
+                  <span>{item.label}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-      {!collapsed && (
+        {/* Footer */}
         <div className="sidebar-footer">
           <div className="sidebar-footer-icon">
             ✓
           </div>
 
-          <div>
-            <strong>AI Model Ready</strong>
-            <span>YOLO11n • Online</span>
-          </div>
+          {!collapsed && (
+            <div>
+              <strong>System Online</strong>
+              <span>AI service connected</span>
+            </div>
+          )}
         </div>
-      )}
-    </aside>
+      </aside>
+    </>
   )
 }
 

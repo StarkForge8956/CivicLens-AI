@@ -14,13 +14,23 @@ import MapView from "./components/MapView"
 
 function App() {
   const [analysisResult, setAnalysisResult] = useState(null)
-  const [activeSection, setActiveSection] = useState("dashboard")
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+
+  const [activeSection, setActiveSection] =
+    useState("dashboard")
+
+  /* Desktop sidebar state */
+  const [sidebarCollapsed, setSidebarCollapsed] =
+    useState(false)
+
+  /* Mobile sidebar state */
+  const [mobileSidebarOpen, setMobileSidebarOpen] =
+    useState(false)
 
   const handleNavigate = (section) => {
     setActiveSection(section)
 
-    const element = document.getElementById(section)
+    const element =
+      document.getElementById(section)
 
     if (element) {
       element.scrollIntoView({
@@ -30,16 +40,44 @@ function App() {
     }
   }
 
+  const handleMobileToggle = () => {
+    setMobileSidebarOpen(
+      (previous) => !previous
+    )
+  }
+
+  const closeMobileSidebar = () => {
+    setMobileSidebarOpen(false)
+  }
+
   return (
-    <div>
+    <div
+      className={
+        mobileSidebarOpen
+          ? "mobile-sidebar-open"
+          : ""
+      }
+    >
       <Sidebar
         activeSection={activeSection}
         onNavigate={handleNavigate}
         collapsed={sidebarCollapsed}
         onToggle={() =>
-          setSidebarCollapsed(!sidebarCollapsed)
+          setSidebarCollapsed(
+            !sidebarCollapsed
+          )
         }
+        mobileOpen={mobileSidebarOpen}
+        onMobileToggle={handleMobileToggle}
       />
+
+      {/* Mobile dark overlay */}
+      {mobileSidebarOpen && (
+        <div
+          className="mobile-sidebar-overlay"
+          onClick={closeMobileSidebar}
+        />
+      )}
 
       <Header collapsed={sidebarCollapsed} />
 
@@ -50,12 +88,16 @@ function App() {
 
         <div id="upload">
           <Upload
-            onAnalysisComplete={setAnalysisResult}
+            onAnalysisComplete={
+              setAnalysisResult
+            }
           />
         </div>
 
         <div id="results">
-          <Results result={analysisResult} />
+          <Results
+            result={analysisResult}
+          />
         </div>
 
         <div id="history">
@@ -74,7 +116,9 @@ function App() {
           <Reports />
         </div>
 
-        <DetectionDetails result={analysisResult} />
+        <DetectionDetails
+          result={analysisResult}
+        />
       </main>
     </div>
   )

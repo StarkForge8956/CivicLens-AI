@@ -3249,3 +3249,703 @@ main {
     min-width: 900px;
   }
 }
+/* =========================================
+   MOBILE APP LAYOUT
+   ========================================= */
+/* =========================================
+   FIX DESKTOP COLLAPSED SIDEBAR
+========================================= */
+
+@media (min-width: 701px) {
+
+  .sidebar.sidebar-collapsed {
+    width: 72px;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow: hidden;
+  }
+
+  .sidebar.sidebar-collapsed .sidebar-top {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 70px;
+  }
+
+  .sidebar.sidebar-collapsed .sidebar-brand {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sidebar.sidebar-collapsed .sidebar-brand-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+  }
+
+  .sidebar.sidebar-collapsed .sidebar-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50px;
+    width: 26px;
+    height: 26px;
+    z-index: 2;
+  }
+
+}
+@media (max-width: 700px) {
+
+  /* Main content */
+  main,
+  .sidebar-collapsed ~ main {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Sidebar becomes a compact top navigation */
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 12px 14px;
+    box-sizing: border-box;
+  }
+
+  .sidebar-collapsed {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  .sidebar-brand {
+    margin-bottom: 12px;
+    padding: 0;
+  }
+
+  .sidebar-brand h2 {
+    font-size: 16px;
+  }
+
+  .sidebar-brand span {
+    font-size: 7px;
+  }
+
+  .sidebar-top {
+    min-height: 42px;
+  }
+
+  /* Hide the desktop collapse button on mobile */
+  .sidebar-toggle {
+    display: none;
+  }
+
+  .sidebar-nav {
+    margin-top: 0;
+  }
+
+  .sidebar-collapsed .sidebar-nav {
+    margin-top: 0;
+  }
+
+  .nav-label {
+    display: none;
+  }
+
+  .sidebar-nav ul {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: none;
+  }
+
+  .sidebar-nav ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item,
+  .sidebar-collapsed .nav-item {
+    flex: 0 0 auto;
+    justify-content: center;
+    margin-bottom: 0;
+    padding: 9px 12px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .nav-item span {
+    font-size: 12px;
+  }
+
+  .nav-icon {
+    font-size: 15px;
+  }
+
+  /* Hide sidebar footer on mobile */
+  .sidebar-footer {
+    display: none;
+  }
+
+  /* Header */
+  .top-header,
+  .top-header.sidebar-collapsed {
+    width: 100%;
+    height: 82px;
+    margin-left: 0;
+    box-sizing: border-box;
+  }
+
+  .civiclens-header-logo {
+    width: 230px;
+    height: 72px;
+  }
+
+  /* Shared section spacing */
+  .dashboard,
+  .upload-section,
+  .results-section,
+  .history-section,
+  .statistics-section {
+    margin: 0;
+    padding: 24px 16px;
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  /* Dashboard */
+  .dashboard-header {
+    gap: 14px;
+  }
+
+  .dashboard-header h2,
+  .upload-header h2,
+  .results-header h2,
+  .history-header h2,
+  .statistics-header h2 {
+    font-size: 24px;
+  }
+
+  .dashboard-subtitle,
+  .upload-header p:last-child,
+  .results-header p:last-child,
+  .history-header p:last-child,
+  .statistics-header p:last-child {
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .dashboard-status {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 17px;
+    min-height: 88px;
+  }
+
+  .stat-card h3 {
+    font-size: 24px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .dashboard-panel {
+    padding: 18px;
+  }
+
+  .panel-header {
+    gap: 10px;
+  }
+
+  /* Recent detection rows */
+  .detection-row {
+    gap: 10px;
+    padding: 12px 0;
+  }
+
+  .detection-row strong {
+    font-size: 13px;
+  }
+
+  /* Upload */
+  .upload-panel {
+    padding: 14px;
+  }
+
+  .upload-dropzone {
+    min-height: 240px;
+    padding: 24px 16px;
+  }
+
+  .upload-dropzone h3 {
+    font-size: 16px;
+  }
+
+  .upload-dropzone p {
+    font-size: 12px;
+  }
+
+  .selected-image-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .change-image-button {
+    width: 100%;
+  }
+
+  .preview-container {
+    max-height: 360px;
+  }
+
+  .preview-container img {
+    max-height: 360px;
+  }
+
+  .analysis-actions {
+    justify-content: stretch;
+  }
+
+  .analyze-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Results */
+  .results-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .results-count {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .results-image-panel,
+  .detection-results-panel {
+    padding: 16px;
+  }
+
+  .results-panel-header {
+    flex-direction: column;
+  }
+
+  .annotated-image-container {
+    padding: 6px;
+  }
+
+  .detection-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .result-detection-card {
+    padding: 15px;
+  }
+
+  /* History */
+  .history-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .history-bulk-delete {
+    width: 100%;
+  }
+
+  .history-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .history-table-header,
+  .history-table-row {
+    min-width: 900px;
+  }
+
+  /* Statistics */
+  .statistics-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .statistics-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statistics-panel {
+    padding: 17px;
+  }
+
+  /* Reports */
+  .reports-section {
+    padding: 30px 16px 55px;
+  }
+
+  .reports-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .reports-header h2,
+  .map-header h2 {
+    font-size: 25px;
+  }
+
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-card {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .report-features {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-info-panel {
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  /* Map */
+  .map-section {
+    padding: 30px 16px 55px;
+  }
+
+  .map-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .map-location-count {
+    width: 100%;
+    box-sizing: border-box;
+    align-items: flex-start;
+  }
+
+  .map-location-card {
+    padding: 16px;
+  }
+
+  .map-location-title {
+    flex-wrap: wrap;
+  }
+
+  .map-coordinates {
+    gap: 8px 14px;
+  }
+
+  .civic-map-container {
+    height: 360px;
+  }
+
+  /* Upload location */
+  .upload-location-panel {
+    padding: 17px;
+  }
+
+  .upload-location-header {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .get-location-button {
+    width: 100%;
+  }
+
+  .location-fields {
+    grid-template-columns: 1fr;
+  }
+
+  /* Detection details */
+  .detection-details-section {
+    padding: 45px 16px;
+  }
+
+  .detection-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detection-detail-card {
+    padding: 18px;
+  }
+
+  .detection-detail-header {
+    flex-direction: column;
+  }
+
+  .detail-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .detail-row strong {
+    text-align: left;
+  }
+
+  /* Incident report */
+  .incident-report-panel {
+    padding: 18px;
+  }
+
+  .incident-report-header {
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .incident-report-content {
+    grid-template-columns: 1fr;
+  }
+
+  .report-detail-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .report-detail-row strong {
+    text-align: left;
+    word-break: break-word;
+  }
+
+  /* Modals */
+  .report-modal-overlay {
+    padding: 12px;
+  }
+
+  .report-modal-header,
+  .report-modal-body {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .report-modal-actions {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .report-modal-actions button {
+    flex: 1;
+  }
+
+  .history-preview-overlay {
+    padding: 10px;
+  }
+
+  .history-preview-modal {
+    width: 100%;
+    max-height: 92vh;
+  }
+
+  .history-preview-image-container {
+    padding: 10px;
+  }
+}
+/* =========================================
+   MOBILE SIDEBAR DRAWER
+   Desktop UI remains unchanged
+========================================= */
+
+.mobile-menu-button {
+  display: none;
+}
+
+.mobile-sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 700px) {
+
+  /* Main app uses full mobile width */
+  main {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  /* Header uses full width */
+  .top-header,
+  .top-header.sidebar-collapsed {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* =========================================
+     MOBILE MENU BUTTON
+  ========================================= */
+
+  .mobile-menu-button {
+    display: flex;
+
+    position: fixed;
+    top: 18px;
+    left: 16px;
+
+    width: 42px;
+    height: 42px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #dbe3eb;
+    border-radius: 10px;
+
+    background: #ffffff;
+    color: #17253a;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    z-index: 1100;
+
+    box-shadow:
+      0 4px 14px
+      rgba(23, 37, 58, 0.12);
+  }
+
+  .mobile-menu-button:active {
+    transform: scale(0.96);
+  }
+
+  /* =========================================
+     MOBILE SIDEBAR
+  ========================================= */
+
+  .sidebar {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 245px;
+
+    z-index: 1101;
+
+    transform: translateX(-100%);
+
+    transition:
+      transform 0.25s ease;
+
+    overflow-y: auto;
+  }
+
+  /* Open sidebar */
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /*
+     On mobile, collapsed desktop state
+     should NOT make the sidebar 72px wide.
+  */
+  .sidebar.sidebar-collapsed {
+    width: 245px;
+
+    padding-left: 16px;
+    padding-right: 16px;
+
+    transform: translateX(-100%);
+  }
+
+  .sidebar.sidebar-collapsed.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* =========================================
+     KEEP DESKTOP-STYLE NAVIGATION
+  ========================================= */
+
+  .sidebar-nav {
+    margin-top: 0;
+  }
+
+  .sidebar-collapsed .sidebar-nav {
+    margin-top: 0;
+  }
+
+  .nav-label {
+    display: block;
+  }
+
+  .sidebar-nav ul {
+    display: block;
+    overflow: visible;
+  }
+
+  .nav-item,
+  .sidebar-collapsed .nav-item {
+    justify-content: flex-start;
+
+    padding: 11px 12px;
+
+    margin-bottom: 5px;
+  }
+
+  .sidebar-collapsed .nav-icon {
+    width: 19px;
+    font-size: 16px;
+  }
+
+  /* Keep footer visible */
+  .sidebar-footer {
+    display: flex;
+  }
+
+  /* =========================================
+     DARK BACKDROP
+  ========================================= */
+
+  .mobile-sidebar-overlay {
+    display: block;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1100;
+
+    background:
+      rgba(8, 15, 25, 0.58);
+
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  /* =========================================
+     PREVENT APP INTERACTION
+  ========================================= */
+
+  .mobile-sidebar-open main,
+  .mobile-sidebar-open .top-header {
+    pointer-events: none;
+  }
+}
